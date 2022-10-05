@@ -28,15 +28,43 @@
       <q-list>
         <q-item-label
           header
+          class="row">
         >
-          Essential Links
+          <h6 class="col-12">Consultorio Virtual</h6>
+          <div class="col-12" style="font-weight: bold; font-size: 18px;">{{$store.state.user.user.username}}</div>
+          <div class="col-12"  style="font-size: 15px;">{{$store.state.user.user.role}}</div>
         </q-item-label>
+          <q-item
+          clickable
+          tag="a"
+          target="_blank"
+        >
+          <q-item-section>
+            <q-btn @click="home()" color="primary">home</q-btn>
+          </q-item-section>
+        </q-item>
+        
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          v-if="$store.state.user.user.role=='ADMIN'"
+        >
+          <q-item-section>
+            <q-btn @click="createUser()" color="primary">Create user</q-btn>
+          </q-item-section>
+        </q-item>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          
+        >
+          <q-item-section>
+            <q-btn @click="logout" color="primary">Logout</q-btn>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -47,71 +75,35 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
-
-  setup () {
-    const leftDrawerOpen = ref(false)
-
+export default {
+  name: 'Home',
+  data () {
     return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+      email: '',
+      password: '',
+      leftDrawerOpen:false
+    }
+  },
+  methods:{
+    toggleLeftDrawer(){
+      this.leftDrawerOpen=!this.leftDrawerOpen
+    },
+    logout(){
+        this.$store.dispatch("user/logout").then(()=>{
+              this.$router.push({path: '/'});
+            });
+      },
+      createUser(){
+        this.$router.push({path: '/userCrud'});
+      },
+      home(){
+        this.$router.push({path: '/home'});
       }
+  },
+  mounted(){
+    if(this.$store.state.user.user.username==''){
+      this.$router.push({path: '/'});
     }
   }
-})
+}
 </script>

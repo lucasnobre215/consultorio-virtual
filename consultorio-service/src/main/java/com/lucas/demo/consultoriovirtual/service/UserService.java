@@ -21,4 +21,18 @@ public class UserService {
     public void createUser(User user){
         repository.save(user);
     }
+
+    public User login(User user){
+        List<User> usersInDatabase = repository.findByUsername(user.getUsername());
+        if(usersInDatabase.size()<=0){
+            return null;
+        }else{
+            User userInDataBase = usersInDatabase.get(0);
+            if(user.getUsername().equals(userInDataBase.getUsername()) && user.getPassword().equals(userInDataBase.getPassword())){
+                return userInDataBase;
+            }else{
+                return null;
+            }
+        }
+    }
 }

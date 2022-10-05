@@ -3,12 +3,18 @@
 
     <q-form
       @submit="onSubmit"
+      @reset="goBack"
       class="q-gutter-md"
     >
       <q-input
         filled
         v-model="username"
         label="Usuário *"
+      />
+      <q-input
+        filled
+        v-model="email"
+        label="Email *"
       />
 
       <q-input
@@ -21,6 +27,8 @@
        <q-select filled v-model="company" :options="companyOptions" label="Empresa" />
 
       <div>
+      
+        <q-btn label="Go back" type="reset"/>
         <q-btn label="Submit" type="submit" color="primary"/>
       </div>
     </q-form>
@@ -58,11 +66,16 @@ export default {
   },
   methods:{
     onSubmit(){
-        debugger
         this.$axios
-        .post('/user/', {username:this.username, password:this.password, role:this.role.value, company:{id:this.company.value,name:this.company.label}}).then(()=>{
-            this.$router.push({path: '/'})
+        .post('/user/', {username:this.username,email:this.email, password:this.password, role:this.role.value, company:{id:this.company.value,name:this.company.label}}).then(()=>{
+            if(this.$store.state.user.user.id==0){
+              
+              this.$router.push({path: '/'})
+            }
         })
+    },
+    goBack(){
+      this.$router.back()
     }
   },
   mounted() {
