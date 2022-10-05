@@ -12,7 +12,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: 'userCrud/', component: () => import('pages/CreateUserForm.vue') },
-      { path: 'home/', component: () => import('pages/Home.vue') }
+      { path: 'home/', component: () => import('pages/Home.vue') },
+      { path: 'proccedure/', component: () => import('pages/Home.vue') }
     ]
   },
 

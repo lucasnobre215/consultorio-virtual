@@ -59,6 +59,17 @@
           clickable
           tag="a"
           target="_blank"
+          v-if="$store.state.user.user.role=='EMPLOYEE'"
+        >
+          <q-item-section>
+            <q-btn @click="createProcedure()" color="primary">Create Proccedure</q-btn>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
           
         >
           <q-item-section>
@@ -98,6 +109,9 @@ export default {
       },
       home(){
         this.$router.push({path: '/home'});
+      },
+      createProcedure(){
+         this.$router.push({path: '/proccedure'});
       }
   },
   mounted(){
