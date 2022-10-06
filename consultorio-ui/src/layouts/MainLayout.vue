@@ -29,8 +29,7 @@
         <q-item-label
           header
           class="row">
-        >
-          <h6 class="col-12">Consultorio Virtual</h6>
+          <div class="col-12 text-weight-bold text-h6">Consultorio Virtual</div>
           <div class="col-12" style="font-weight: bold; font-size: 18px;">{{$store.state.user.user.username}}</div>
           <div class="col-12"  style="font-size: 15px;">{{$store.state.user.user.role}}</div>
         </q-item-label>
@@ -51,7 +50,7 @@
           v-if="$store.state.user.user.role=='ADMIN'"
         >
           <q-item-section>
-            <q-btn @click="createUser()" color="primary">Create user</q-btn>
+            <q-btn @click="createUser()" color="primary">Usuários</q-btn>
           </q-item-section>
         </q-item>
 
@@ -59,10 +58,21 @@
           clickable
           tag="a"
           target="_blank"
-          v-if="$store.state.user.user.role=='EMPLOYEE'"
+          v-if="$store.state.user.user.role=='ADMIN'"
         >
           <q-item-section>
-            <q-btn @click="createProcedure()" color="primary">Create Proccedure</q-btn>
+            <q-btn @click="createUser()" color="primary">Clinicas</q-btn>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          v-if="$store.state.user.user.role != 'CUSTOMER'"
+        >
+          <q-item-section>
+            <q-btn @click="createProcedure()" color="primary">Procedimentos</q-btn>
           </q-item-section>
         </q-item>
 
@@ -105,7 +115,7 @@ export default {
             });
       },
       createUser(){
-        this.$router.push({path: '/userCrud'});
+        this.$router.push({path: '/user'});
       },
       home(){
         this.$router.push({path: '/home'});

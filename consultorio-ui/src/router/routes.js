@@ -11,9 +11,10 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
+      { path: 'user/', component: () => import('pages/UserList.vue') },
       { path: 'userCrud/', component: () => import('pages/CreateUserForm.vue') },
       { path: 'home/', component: () => import('pages/Home.vue') },
-      { path: 'proccedure/', component: () => import('pages/Home.vue') }
+      { path: 'proccedure/', component: () => import('pages/ProcedureList.vue') }
     ]
   },
 
