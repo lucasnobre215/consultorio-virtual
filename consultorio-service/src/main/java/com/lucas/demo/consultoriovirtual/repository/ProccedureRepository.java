@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
     public interface ProccedureRepository extends CrudRepository<Procedure, Long> {
 
-    List<Procedure> findById(long id);
+    Procedure findById(long id);
+
+    List<Procedure> findByCompanyId(long id);
 
 }

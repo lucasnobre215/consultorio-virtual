@@ -5,10 +5,7 @@ import com.lucas.demo.consultoriovirtual.model.User;
 import com.lucas.demo.consultoriovirtual.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,8 +23,17 @@ public class UserController {
     }
 
     @RequestMapping (value="/", method= RequestMethod.POST)
-    public void createUser(@RequestBody User user){
-        userService.createUser(user);
+    public @ResponseBody User createUser(@RequestBody User user){
+        return userService.createUpdateUser(user);
+    }
+    @RequestMapping (value="/{id}", method= RequestMethod.DELETE)
+    public @ResponseBody List<User> deleteUser(@PathVariable long id){
+        return userService.deleteUser(id);
+    }
+
+    @RequestMapping (value="/{id}", method= RequestMethod.GET)
+    public @ResponseBody User findById(@PathVariable int id){
+        return userService.findById(id);
     }
 
     @RequestMapping (value="/login", method= RequestMethod.POST)

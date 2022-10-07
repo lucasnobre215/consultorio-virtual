@@ -17,6 +17,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
+
     @Column(name = "password")
     private String password;
     @Column(name = "role")
@@ -72,5 +73,14 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

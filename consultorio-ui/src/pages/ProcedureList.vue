@@ -1,7 +1,46 @@
 <template>
   <q-page class="row justify-center content-start" style="padding: 16px">
     <div class="col-12">
-      <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" />
+      <q-table title="Usuários" :rows="rows" :columns="columns" row-key="name">
+        <template v-slot:top-right>
+          <q-btn
+            round
+            size="sm"
+            color="primary"
+            icon="person_add"
+            @click="goToProcedureForm"
+          />
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td key="name" :props="props">
+              {{ props.row.name }}
+            </q-td>
+            <q-td key="price" :props="props">
+              {{ props.row.price }}
+            </q-td>
+            <q-td key="company" :props="props">
+              {{ props.row.company }}
+            </q-td>
+            <q-td key="id" :props="props">
+              <q-btn
+                @click="goToProcedureForm(props.row.id)"
+                round
+                size="sm"
+                color="primary"
+                icon="mode_edit"
+              />
+              <q-btn
+                @click="removeProcedure(props.row.id)"
+                round
+                size="sm"
+                color="negative"
+                icon="close"
+              />
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
     </div>
   </q-page>
 </template>
@@ -10,149 +49,79 @@
 const columns = [
   {
     name: "name",
-    required: true,
-    label: "Dessert (100g serving)",
-    align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-  {
-    name: "calories",
     align: "center",
-    label: "Calories",
-    field: "calories",
+    label: "Nome do procedimento",
+    field: "name",
     sortable: true,
-  },
-  { name: "fat", label: "Fat (g)", field: "fat", sortable: true },
-  { name: "carbs", label: "Carbs (g)", field: "carbs" },
-  { name: "protein", label: "Protein (g)", field: "protein" },
-  { name: "sodium", label: "Sodium (mg)", field: "sodium" },
-  {
-    name: "calcium",
-    label: "Calcium (%)",
-    field: "calcium",
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
   {
-    name: "iron",
-    label: "Iron (%)",
-    field: "iron",
+    name: "price",
+    align: "center",
+    label: "Preço",
+    field: "price",
     sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
+  { name: "company", align: "center", label: "Clínica", field: "company" },
+  { name: "id", align: "center", label: "Ações", field: "id" },
 ];
 
-const rows = [
-  {
-    name: "Frozen Yogurt",
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: "14%",
-    iron: "1%",
-  },
-  {
-    name: "Ice cream sandwich",
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: "8%",
-    iron: "1%",
-  },
-  {
-    name: "Eclair",
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: "6%",
-    iron: "7%",
-  },
-  {
-    name: "Cupcake",
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: "3%",
-    iron: "8%",
-  },
-  {
-    name: "Gingerbread",
-    calories: 356,
-    fat: 16.0,
-    carbs: 49,
-    protein: 3.9,
-    sodium: 327,
-    calcium: "7%",
-    iron: "16%",
-  },
-  {
-    name: "Jelly bean",
-    calories: 375,
-    fat: 0.0,
-    carbs: 94,
-    protein: 0.0,
-    sodium: 50,
-    calcium: "0%",
-    iron: "0%",
-  },
-  {
-    name: "Lollipop",
-    calories: 392,
-    fat: 0.2,
-    carbs: 98,
-    protein: 0,
-    sodium: 38,
-    calcium: "0%",
-    iron: "2%",
-  },
-  {
-    name: "Honeycomb",
-    calories: 408,
-    fat: 3.2,
-    carbs: 87,
-    protein: 6.5,
-    sodium: 562,
-    calcium: "0%",
-    iron: "45%",
-  },
-  {
-    name: "Donut",
-    calories: 452,
-    fat: 25.0,
-    carbs: 51,
-    protein: 4.9,
-    sodium: 326,
-    calcium: "2%",
-    iron: "22%",
-  },
-  {
-    name: "KitKat",
-    calories: 518,
-    fat: 26.0,
-    carbs: 65,
-    protein: 7,
-    sodium: 54,
-    calcium: "12%",
-    iron: "6%",
-  },
-];
+const rows = [];
 
 export default {
-  setup() {
+  data() {
     return {
-      columns,
-      rows,
+      columns: columns,
+      rows: rows,
     };
+  },
+  methods: {
+    goToProcedureForm(userId) {
+      this.$router.push({ name: "proccedureForm", params: { id: userId } });
+    },
+    removeProcedure(id) {
+      this.$axios.delete("/procedure/" + id).then((response) => {
+        this.rows = response.data.map((x) => {
+          const procedure = {
+            id: x.id,
+            name: x.name,
+            price: x.price,
+            company: x.company != null ? x.company.name : "",
+          };
+          return procedure;
+        });
+      });
+    },
+    goBack() {
+      this.$router.back();
+    },
+  },
+  mounted() {
+    if (this.$store.state.user.user.role == "ADMIN") {
+      this.$axios.get("/procedure/").then((response) => {
+        this.rows = response.data.map((x) => {
+          const procedure = {
+            id: x.id,
+            name: x.name,
+            price: x.price,
+            company: x.company != null ? x.company.name : "",
+          };
+          return procedure;
+        });
+      });
+    }else{
+      debugger
+       this.$axios.get("/procedure/company/"+this.$store.state.user.user.company.id).then((response) => {
+        this.rows = response.data.map((x) => {
+          const procedure = {
+            id: x.id,
+            name: x.name,
+            price: x.price,
+            company: x.company != null ? x.company.name : "",
+          };
+          return procedure;
+        });
+      });
+    }
   },
 };
 </script>

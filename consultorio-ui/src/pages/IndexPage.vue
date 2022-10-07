@@ -33,13 +33,16 @@ export default {
   },
   methods:{
     redirectToCreateUser(){
-      this.$router.push({path: '/crud'})
+      this.$router.push({path: 'userCrudCreate'})
     },
     login(){
       if(this.username !=null && this.password!=null){
         this.$axios
         .post('/user/login', {username:this.username, password:this.password}).then((response)=>{
-            this.$store.dispatch("user/login",response.data).then(()=>{
+
+            if(response.data !="")
+            this.$store.dispatch("user/login",response.data).then((response)=>{
+              
               this.$router.push({path: '/home'});
             })
         })

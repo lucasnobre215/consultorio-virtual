@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
     public interface CompanyRepository extends CrudRepository<Company, Long> {
-
+    Company findById(long id);
 
 }

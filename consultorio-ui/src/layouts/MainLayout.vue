@@ -61,7 +61,7 @@
           v-if="$store.state.user.user.role=='ADMIN'"
         >
           <q-item-section>
-            <q-btn @click="createUser()" color="primary">Clinicas</q-btn>
+            <q-btn @click="companyList()" color="primary">Clinicas</q-btn>
           </q-item-section>
         </q-item>
 
@@ -122,6 +122,9 @@ export default {
       },
       createProcedure(){
          this.$router.push({path: '/proccedure'});
+      },
+      companyList(){
+        this.$router.push({path: '/company'});
       }
   },
   mounted(){

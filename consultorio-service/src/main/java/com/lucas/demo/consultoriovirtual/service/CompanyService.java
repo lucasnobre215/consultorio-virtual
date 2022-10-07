@@ -18,4 +18,17 @@ public class CompanyService {
     public List<Company> findAll(){
         return (List<Company>) repository.findAll();
     }
+
+    public Company createUpdateCompany(Company company){
+        return repository.save(company);
+    }
+    public List<Company> deleteCompany(long id) {
+        Company user = repository.findById(id);
+        repository.delete(user);
+        return findAll();
+    }
+
+    public Company findById(long userID) {
+        return repository.findById(userID);
+    }
 }

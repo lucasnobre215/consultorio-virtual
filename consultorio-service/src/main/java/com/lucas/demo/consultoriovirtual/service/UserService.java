@@ -18,8 +18,8 @@ public class UserService {
     }
 
 
-    public void createUser(User user){
-        repository.save(user);
+    public User createUpdateUser(User user){
+        return repository.save(user);
     }
 
     public User login(User user){
@@ -34,5 +34,15 @@ public class UserService {
                 return null;
             }
         }
+    }
+
+    public List<User> deleteUser(long id) {
+        User user = repository.findById(id);
+        repository.delete(user);
+        return findAll();
+    }
+
+    public User findById(long userID) {
+        return repository.findById(userID);
     }
 }

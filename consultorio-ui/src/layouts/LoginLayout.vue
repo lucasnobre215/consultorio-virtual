@@ -24,11 +24,6 @@ import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'LoginLayout',
-  setup () {
-    const leftDrawerOpen = ref(false)
-    return {
-  
-    }
-  }
+
 })
 </script>
