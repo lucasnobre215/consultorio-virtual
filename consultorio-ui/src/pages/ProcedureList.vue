@@ -109,7 +109,6 @@ export default {
         });
       });
     }else{
-      debugger
        this.$axios.get("/procedure/company/"+this.$store.state.user.user.company.id).then((response) => {
         this.rows = response.data.map((x) => {
           const procedure = {

@@ -52,11 +52,8 @@ export default {
   },
  
   mounted() {
-     debugger
     if (this.$route.params.id != null) {
-      debugger
       this.$axios.get("/procedure/" + this.$route.params.id).then((response) => {
-        debugger
         this.id=response.data.id
         this.name = response.data.name;
         this.price = response.data.price;

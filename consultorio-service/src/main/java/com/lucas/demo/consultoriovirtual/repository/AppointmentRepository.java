@@ -12,4 +12,7 @@ import java.util.List;
 
     Appointment findById(long id);
 
+    List<Appointment> findByEmployeeId(long id);
+
+    List<Appointment> findByCustomerId(long id);
 }

@@ -1,7 +1,5 @@
 package com.lucas.demo.consultoriovirtual.model;
 import com.lucas.demo.consultoriovirtual.model.enums.UserRoles;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -13,6 +11,9 @@ public class User {
     private Long id;
     @Column(name = "username")
     private String username;
+
+    @Column(name = "fullname")
+    private String fullName;
     
     @Column(name = "email")
     private String email;
@@ -82,5 +83,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFullName() {
+
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

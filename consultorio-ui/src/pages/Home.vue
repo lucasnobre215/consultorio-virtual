@@ -5,50 +5,29 @@
       bordered
       v-if="$store.state.user.user.role != 'ADMIN'"
     >
-      <q-expansion-item
-        group="somegroup"
-        icon=""
-        :label="'Consultas Ativas'"
-        header-class="text-primary text-weight-bold text-h6"
-      >
+      <q-expansion-item group="somegroup">
+        <template v-slot:header>
+          <q-item-section class="text-primary text-weight-bold text-h6">
+            Consultas Ativas
+          </q-item-section>
+
+          <q-item-section side>
+            <q-btn
+              outline
+              rounded
+              color="primary"
+              label="Marcar Consulta"
+              icon="today"
+              @click="goToAppointmentForm()"
+            />
+          </q-item-section>
+        </template>
         <div class="row" style="margin: 8px">
-          <q-card class="col-12">
-            <q-card-section>
-              <div class="row justify-between">
-                <div class="col-1">
-                  <q-btn round color="secondary" icon="event" />
-                </div>
-                <div class="col-8" style="font-size: 24px; font-weight: bold">
-                  Dra. Beatryz Franco - 12/10/2022
-                </div>
-                <div class="col-2 row justify-end" style="max-height: 32px">
-                  <q-btn round size="sm" color="negative" icon="close" />
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
-          <q-card class="col-12" style="margin-top: 8px">
-            <q-card-section>
-              <div class="row justify-between">
-                <div class="col-1">
-                  <q-btn round color="amber" icon="event" />
-                </div>
-                <div class="col-8" style="font-size: 24px; font-weight: bold">
-                  Dra. Beatryz Franco - 14/10/2022
-                </div>
-                <div class="col-2 row justify-end" style="max-height: 32px">
-                  <q-btn
-                    round
-                    size="sm"
-                    color="secondary"
-                    icon="done"
-                    style="margin-right: 8px"
-                  />
-                  <q-btn round size="sm" color="negative" icon="close" />
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
+          <Appointment
+            :appointment="appointment"
+            :hasAction="true"
+            v-for="appointment in openAppointments"
+          />
         </div>
       </q-expansion-item>
 
@@ -58,43 +37,37 @@
         group="somegroup"
         :label="'Consultas Finalizadas'"
         header-class="text-primary text-weight-bold text-h6"
-      >
-        <div class="row" style="margin: 8px">
-          <q-card class="col-12">
-            <q-card-section>
-              <div class="row justify-between">
-                <div class="col-1">
-                  <q-btn round color="primary" icon="event" />
-                </div>
-                <div class="col-8" style="font-size: 24px; font-weight: bold">
-                  Dra. Beatryz Franco - 12/10/2022
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
-          <q-card class="col-12" style="margin-top: 8px">
-            <q-card-section>
-              <div class="row justify-between">
-                <div class="col-1">
-                  <q-btn round color="primary" icon="event" />
-                </div>
-                <div class="col-8" style="font-size: 24px; font-weight: bold">
-                  Dra. Beatryz Franco - 14/10/2022
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
+        ><div class="row" style="margin: 8px">
+          <Appointment
+            :appointment="appointment"
+            :hasAction="false"
+            v-for="appointment in closedAppointments"
+          />
         </div>
       </q-expansion-item>
-
       <q-separator></q-separator>
     </q-list>
     <div class="row" v-if="$store.state.user.user.role == 'ADMIN'">
       <q-card class="col-12">
         <q-card-section class="row">
-          <q-btn color="primary" label="Usuários"  class="col-12" style="margin-top:8px;"/>
-          <q-btn color="primary" label="Clínicas"  class="col-12" style="margin-top:8px;"/>
-          <q-btn color="primary" label="Procedimentos"  class="col-12" style="margin-top:8px;"/>
+          <q-btn
+            color="primary"
+            label="Usuários"
+            class="col-12"
+            style="margin-top: 8px"
+          />
+          <q-btn
+            color="primary"
+            label="Clínicas"
+            class="col-12"
+            style="margin-top: 8px"
+          />
+          <q-btn
+            color="primary"
+            label="Procedimentos"
+            class="col-12"
+            style="margin-top: 8px"
+          />
         </q-card-section>
       </q-card>
     </div>
@@ -102,12 +75,60 @@
 </template>
 
 <script>
+import Appointment from "../components/Appointment.vue";
+
 export default {
   name: "Home",
   data() {
-    return { expanded: false };
+    return {
+      expanded: false,
+      openAppointments: [
+
+      ],
+      closedAppointments: [
+      ],
+    };
   },
-  methods: {},
+  components: {
+    Appointment: Appointment,
+  },
+  methods: {
+    goToAppointmentForm() {
+      this.$router.push({ path: "/appointment" });
+    },
+  },
+  mounted() {
+    this.$axios
+      .get(
+        "/appointment/" +
+          this.$store.state.user.user.role +
+          "/" +
+          this.$store.state.user.user.id
+      )
+      .then((response) => {
+        var appointments = response.data.map((x) => {
+          const appointment = {};
+          appointment["id"] = x.id;
+          appointment["date"] = x.date;
+          appointment["status"] = x.status;
+          appointment["employee"] = x.employee.fullName;
+          appointment["client"] = x.customer.fullName;
+
+          return appointment;
+        });
+        this.closedAppointments = appointments.filter(
+          (x) => x.status == "CLOSED"
+        ).sort(function(a, b) {
+          return a >b;
+        });
+      
+                this.openAppointments = appointments.filter(
+          (x) => x.status != "CLOSED"
+        ).sort(function(a, b) {
+          return a >b;
+        });;
+      });
+  },
 };
 </script>
 

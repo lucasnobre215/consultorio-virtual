@@ -3,6 +3,7 @@ package com.lucas.demo.consultoriovirtual.controller;
 
 import com.lucas.demo.consultoriovirtual.model.Company;
 import com.lucas.demo.consultoriovirtual.model.User;
+import com.lucas.demo.consultoriovirtual.model.enums.UserRoles;
 import com.lucas.demo.consultoriovirtual.service.CompanyService;
 import com.lucas.demo.consultoriovirtual.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

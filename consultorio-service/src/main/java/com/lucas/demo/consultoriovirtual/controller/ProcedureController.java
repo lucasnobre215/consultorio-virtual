@@ -15,28 +15,22 @@ public class ProcedureController {
 
     @Autowired
     ProcedureService service;
-
-
     @RequestMapping (value="/", method= RequestMethod.GET)
     public @ResponseBody List<Procedure> findAll(){
         return service.findAll();
     }
-
     @RequestMapping (value="/", method= RequestMethod.POST)
     public @ResponseBody Procedure createProcedure(@RequestBody Procedure procedure){
         return service.createUpdateProcedure(procedure);
     }
-
     @RequestMapping (value="/{id}", method= RequestMethod.DELETE)
     public @ResponseBody List<Procedure> deleteProcedure(@PathVariable long id){
         return service.deleteProcedure(id);
     }
-
     @RequestMapping (value="/company/{id}", method= RequestMethod.GET)
     public @ResponseBody List<Procedure> findByCompanyId(@PathVariable int id){
         return service.findByCompanyId(id);
     }
-
     @RequestMapping (value="/{id}", method= RequestMethod.GET)
     public @ResponseBody Procedure findById(@PathVariable int id){
         return service.findById(id);

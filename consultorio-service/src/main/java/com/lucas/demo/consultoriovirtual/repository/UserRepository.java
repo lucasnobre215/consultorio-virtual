@@ -2,6 +2,7 @@ package com.lucas.demo.consultoriovirtual.repository;
     import java.util.List;
 
     import com.lucas.demo.consultoriovirtual.model.User;
+    import com.lucas.demo.consultoriovirtual.model.enums.UserRoles;
     import org.springframework.data.repository.CrudRepository;
     import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ package com.lucas.demo.consultoriovirtual.repository;
 
         User findById(long id);
 
+    List<User> findByCompanyIdAndRole(long id, UserRoles role);
 }

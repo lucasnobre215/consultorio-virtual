@@ -2,6 +2,7 @@
   <div class="q-pa-md" style="max-width: 400px">
     <q-form @submit="onSubmit" @reset="goBack" class="q-gutter-md">
       <q-input filled v-model="username" label="Usuário *" />
+      <q-input filled v-model="fullname" label="Nome Completo *" />
       <q-input filled v-model="email" label="Email *" />
 
       <q-input filled type="password" v-model="password" label="Senha *" />
@@ -33,6 +34,7 @@ export default {
     return {
       id:0,
       username: "",
+      fullname:"",
       password: "",
       email: "",
       role: "",
@@ -61,6 +63,7 @@ export default {
         .post("/user/", {
           id:this.id,
           username: this.username,
+          fullname: this.fullname,
           email: this.email,
           password: this.password,
           role: this.role.value,
@@ -102,6 +105,7 @@ export default {
         this.id=response.data.id
         this.username = response.data.username;
         this.email = response.data.email;
+        this.fullname = response.data.fullName;
         this.password = response.data.password;
         this.role = this.parseRole(response.data.role);
         this.company = response.data.company!=null ? {label:response.data.company.name,value:response.data.company.id}:null;

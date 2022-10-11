@@ -19,7 +19,8 @@ const routes = [
       { path: 'proccedureForm/:id', name: 'proccedureForm', component: () => import('pages/ProccedureForm.vue') },
       
       { path: 'company/', name: 'company', component: () => import('pages/CompanyList.vue') },
-      { path: 'companyForm/:id', name: 'companyForm', component: () => import('pages/CompanyForm.vue') }
+      { path: 'companyForm/:id', name: 'companyForm', component: () => import('pages/CompanyForm.vue') },
+      { path: 'appointment/', name: 'appointmentForm', component: () => import('pages/AppointmentForm.vue') }
     ]
   },
 

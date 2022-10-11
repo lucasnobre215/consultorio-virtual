@@ -1,8 +1,13 @@
 package com.lucas.demo.consultoriovirtual.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lucas.demo.consultoriovirtual.model.enums.AppointmentStatus;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "appointments")
@@ -12,6 +17,7 @@ public class Appointment {
     private Long id;
 
     @Column(name = "date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime date;
 
     @ManyToOne
@@ -22,10 +28,21 @@ public class Appointment {
     @JoinColumn(name="employee_id")
     private User employee;
 
+    @Column(name="status")
+    private AppointmentStatus status;
 
     public Appointment() {
     }
-    
+
+
+    public AppointmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
