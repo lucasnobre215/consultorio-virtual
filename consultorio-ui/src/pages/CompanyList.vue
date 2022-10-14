@@ -1,7 +1,7 @@
 <template>
   <q-page class="row justify-center content-start" style="padding: 16px">
     <div class="col-12">
-      <q-table title="Usuários" :rows="rows" :columns="columns" row-key="name">
+      <q-table title="Consultório" :rows="rows" :columns="columns" row-key="name">
         <template v-slot:top-right>
           <q-btn
             round

@@ -11,6 +11,7 @@
         v-model="role"
         :options="roleOptions"
         label="Tipo de Usuário"
+        v-if="$store.state.user.user.role != 0"
       />
       <q-select
         filled
@@ -66,7 +67,7 @@ export default {
           fullname: this.fullname,
           email: this.email,
           password: this.password,
-          role: this.role.value,
+          role: this.role.value != null ? this.role.value :0,
           company: { id: this.company.value, name: this.company.label },
         })
         .then((response) => {
